@@ -4,16 +4,8 @@ kind: Kustomization
 namespace: argocd
 
 resources:
-- https://raw.githubusercontent.com/argoproj/argo-cd/v2.14.1/manifests/install.yaml
+- https://raw.githubusercontent.com/argoproj/argo-cd/v2.14.0/manifests/install.yaml
 
 patches:
 - path: argocd-cm.patch.yaml
 - path: argocd-cmd-params-cm.patch.yaml
-
-images:
-- name: quay.io/argoproj/argocd
-  newName: 833935676990.dkr.ecr.eu-west-1.amazonaws.com/quay/argoproj/argocd
-- name: ghcr.io/dexidp/dex
-  newName: 833935676990.dkr.ecr.eu-west-1.amazonaws.com/github/dexidp/dex
-- name: redis
-  newName: 833935676990.dkr.ecr.eu-west-1.amazonaws.com/docker/library/redis
