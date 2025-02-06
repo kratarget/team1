@@ -33,7 +33,7 @@ jobs:
         with:
           version: latest
         env:
-          JF_URL: ${{ vars.JF_URL }}
+          JF_URL: ${{ secrets.JF_URL }}
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
 
       - name: Set up JDK 17  # Change this version if needed
@@ -61,7 +61,7 @@ jobs:
           
       - name: Deploy to Jfrog 
         run: |
-              jf mvn-config --repo-deploy-releases=${{vars.ARTIFACTORY_RELEASE}} --repo-deploy-snapshots=${{vars.ARTIFACTORY_SNAPSHOT}}
+              jf mvn-config --repo-deploy-releases=${{secrets.ARTIFACTORY_RELEASE}} --repo-deploy-snapshots=${{secrets.ARTIFACTORY_SNAPSHOT}}
               jf mvn clean package deploy -DskipTests
               jf rt bp oneretail-app ${{ github.run_number }}
               
