@@ -76,18 +76,18 @@ jobs:
       # 3) Now the CLI knows which server to use, so you can run "jf mvn ..." safely
       - name: Maven build & deploy
         run: |
-          # (Optional) Bump version in the POM before building:
-          VERSION="1.0.${{ github.run_number }}"
-          echo "Updating Maven project to version: $VERSION"
-          mvn versions:set -DnewVersion=$VERSION
-
-          # (Optional) Build the project (compile/package):
-          mvn clean package -DskipTests
-
           # Configure which repos to use for snapshots/releases:
           jf mvn-config \
             --repo-deploy-releases=${ARTIFACTORY_RELEASE} \
             --repo-deploy-snapshots=${ARTIFACTORY_SNAPSHOT}
+
+          # (Optional) Bump version in the POM before building:
+          VERSION="1.0.${{ github.run_number }}"
+          echo "Updating Maven project to version: $VERSION"
+          jf mvn versions:set -DnewVersion=$VERSION
+
+          # (Optional) Build the project (compile/package):
+          jf mvn clean package -DskipTests
 
           # Deploy using JFrog CLI (Maven)
           jf mvn deploy
