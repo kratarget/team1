@@ -71,15 +71,15 @@ jobs:
           JF_USER: ${{ secrets.ARTIFACT_USER_ID }}
           JF_ACCESS_TOKEN: ${{ secrets.ARTIFACT_TOKEN }} # You have an option of giving password as well
 
-      - name: Configure JFrog CLI
-        run: |
-          # Add a server config named "my-jfrog-server"
-          jf c add my-jfrog-server \
-            --url="https://oneretailhackaton.jfrog.io" \
-            --access-token="${{ secrets.JF_ACCESS_TOKEN }}" \
-            --interactive=false
+      # - name: Configure JFrog CLI
+      #   run: |
+      #     # Add a server config named "my-jfrog-server"
+      #     jf c add my-jfrog-server \
+      #       --url="https://oneretailhackaton.jfrog.io" \
+      #       --access-token="${{ secrets.JF_ACCESS_TOKEN }}" \
+      #       --interactive=false
 
-          jf c use my-jfrog-server
+      #     jf c use my-jfrog-server
           
           
       - name: Deploy to Jfrog 
