@@ -1,8 +1,3 @@
-resource "aws_ssm_parameter" "dummy-team1" {
-  name  = "/hackathon/dummyteam1"
-  type  = "String"
-  value = "Hello"
-}
 #
 # module "terraform-aws-eks" {
 #   source = "./terraform-aws-eks"
