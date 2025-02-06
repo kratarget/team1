@@ -1,7 +1,7 @@
-variable "AWS_REGION" {default = "eu-west-1"}
-variable "AWS_ACCESS_KEY" {default = null}
-variable "AWS_SECRET_KEY" {default = null}
-variable "AWS_PROFILE" {default = null}
+variable "AWS_REGION" { default = "eu-west-1" }
+variable "AWS_ACCESS_KEY" { default = null }
+variable "AWS_SECRET_KEY" { default = null }
+variable "AWS_PROFILE" { default = null }
 
 terraform {
   required_providers {
@@ -17,4 +17,10 @@ provider "aws" {
   region     = var.AWS_REGION
   access_key = var.AWS_ACCESS_KEY
   secret_key = var.AWS_SECRET_KEY
+}
+
+resource "aws_ssm_parameter" "dummy" {
+  name  = "/hackathon/dummy"
+  type  = "String"
+  value = "dummy"
 }
