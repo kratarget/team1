@@ -10,6 +10,10 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest  # Uses GitHub-hosted runner
 
+    permissions:
+      contents: read
+      packages: write 
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4  # Pulls the repo
@@ -36,7 +40,7 @@ jobs:
         run: mvn clean package -DskipTests  # Add -DskipTests if you want to skip tests
 
       - name: Log in to GitHub Container Registry (GHCR)
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        run: echo "${{ secrets.PACKAGES_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Build Docker image
         run: docker build -t ghcr.io/${{ github.repository }}/team1-app:latest .
