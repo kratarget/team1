@@ -18,9 +18,3 @@ provider "aws" {
   access_key = var.AWS_ACCESS_KEY
   secret_key = var.AWS_SECRET_KEY
 }
-
-resource "aws_ssm_parameter" "dummy" {
-  name  = "/hackathon/dummy"
-  type  = "String"
-  value = "dummy"
-}
