@@ -95,17 +95,19 @@ jobs:
           jf mvn deploy
 
           # Optionally publish build info to Artifactory:
-          jf rt bp my-build-name ${{ github.run_number }}
+          jf rt bp oneretail-app ${{ github.run_number }}
         env:
           ARTIFACTORY_RELEASE: ${{ env.ARTIFACTORY_RELEASE }}
           ARTIFACTORY_SNAPSHOT: ${{ env.ARTIFACTORY_SNAPSHOT }}
+          JF_URL: ${{ secrets.JF_URL }}
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
 
       - name: Upload JAR to Artifactory (optional extra step)
         run: |
           # Example of uploading all .jar files to the snapshot repo:
           jf rt upload "**/*.jar" "${{ env.ARTIFACTORY_SNAPSHOT }}"
         env:
-          JF_URL: ${{ vars.JF_URL }}
+          JF_URL: ${{ secrets.JF_URL }}
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
 
       # --------------------------------------------------------
