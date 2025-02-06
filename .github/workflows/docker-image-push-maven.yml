@@ -81,6 +81,8 @@ jobs:
             --repo-deploy-releases=${ARTIFACTORY_RELEASE} \
             --repo-deploy-snapshots=${ARTIFACTORY_SNAPSHOT}
 
+          jf rt ping
+
           # (Optional) Bump version in the POM before building:
           VERSION="1.0.${{ github.run_number }}"
           echo "Updating Maven project to version: $VERSION"
