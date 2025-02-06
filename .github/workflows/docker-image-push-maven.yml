@@ -58,23 +58,21 @@ jobs:
           JF_URL: ${{ vars.JF_URL }}               # e.g. https://mycompany.jfrog.io (no trailing /artifactory)
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
 
-      - name: Verify JFrog CLI
-        run: jf -v
+      - name: Configure a Server ID
+        run: |
+          jf c add my-jfrog-server \
+            --interactive=false \
+            --artifactory-url="${{ env.JF_URL }}" \
+            --access-token="${{ env.JF_ACCESS_TOKEN }}"
 
-      # --------------------------------------------------------
-      # 2) Now we can run Maven commands that rely on JFrog CLI
-      # --------------------------------------------------------
-      - name: Bump Maven version
+          jf c use my-jfrog-server
+
+      - name: Maven deploy to Artifactory with JFrog CLI
         run: |
           VERSION="1.0.${{ github.run_number }}"
           echo "Updating Maven project to version: $VERSION"
           mvn versions:set -DnewVersion=$VERSION
-
-      - name: Maven build (compile/package)
-        run: mvn clean package -DskipTests
-
-      - name: Maven deploy to Artifactory with JFrog CLI
-        run: |
+          
           # Configure which repositories to use for snapshots/releases:
           jf mvn-config \
              --repo-deploy-releases=${ARTIFACTORY_RELEASE} \
