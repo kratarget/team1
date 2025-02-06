@@ -6,7 +6,7 @@ module "terraform-aws-eks" {
 
   app_name        = "team1-terraform"
   environment     = "development"
-  cluster_version = "1.31"
+  cluster_version = "1.32"
   subnet_ids = [
     "subnet-02d7fe499e716ba1c",
     "subnet-0ad66248d4ac0abb3"
