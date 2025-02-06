@@ -39,6 +39,13 @@ jobs:
       - name: Build the project with Maven
         run: mvn clean package -DskipTests  # Add -DskipTests if you want to skip tests
 
+      - name: Bump Maven version
+        run: |
+          VERSION="1.0.${{ github.run_number }}"
+          echo "Updating Maven project to version: $VERSION"
+          mvn versions:set -DnewVersion=$VERSION
+
+
       - name: Setup jfrog
         uses: jfrog/setup-jfrog-cli@v4
         with:
@@ -52,7 +59,7 @@ jobs:
         run: |
               jf mvn-config --repo-deploy-releases=${ARTIFACTORY_RELEASE} --repo-deploy-snapshots=${ARTIFACTORY_SNAPSHOT} # mention the names of your release and snapshot repos within the jfrog artifacory
               jf mvn deploy
-              jf rt bp # (optional, deploy build info, use --dry-run flag to see the build info in console without committing it)
+              jf rt bp oneretail-app ${{ github.run_number }}# (optional, deploy build info, use --dry-run flag to see the build info in console without committing it)
 
       - name: Log in to GitHub Container Registry (GHCR)
         run: echo "${{ secrets.PACKAGES_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
