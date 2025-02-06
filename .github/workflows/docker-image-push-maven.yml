@@ -54,24 +54,14 @@ jobs:
         with:
           version: 'latest'
         env:
-          # If you have these in GitHub "Actions Variables" or "Secrets and variables"
-          JF_URL: ${{ vars.JF_URL }}               # e.g. https://mycompany.jfrog.io (no trailing /artifactory)
+          JF_URL: ${{ secrets.JF_URL }}
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
-
-      - name: Configure a Server ID
-        run: |
-          jf c add my-jfrog-server \
-            --interactive=false \
-            --artifactory-url="${{ env.JF_URL }}" \
-            --access-token="${{ env.JF_ACCESS_TOKEN }}"
-
-          jf c use my-jfrog-server
 
       - name: Maven deploy to Artifactory with JFrog CLI
         run: |
           VERSION="1.0.${{ github.run_number }}"
           echo "Updating Maven project to version: $VERSION"
-          mvn versions:set -DnewVersion=$VERSION
+          jf mvn versions:set -DnewVersion=$VERSION
           
           # Configure which repositories to use for snapshots/releases:
           jf mvn-config \
