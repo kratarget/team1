@@ -5,3 +5,5 @@ target/
 *.ear
 *.class
 .idea
+.terraform/
+.terraform.lock.hcl
