@@ -65,6 +65,8 @@ jobs:
       - name: Maven deploy with JFrog CLI
         run: |
           jf mvn-config \
+            --repo-resolve-releases=team1-libs-release \
+            --repo-resolve-snapshots=team1-libs-snapshot \
             --repo-deploy-releases=team1-libs-release \
             --repo-deploy-snapshots=team1-libs-snapshot \
             --server-id-resolve=my-jfrog-server \
