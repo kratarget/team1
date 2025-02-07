@@ -63,7 +63,7 @@ jobs:
             --repo-resolve-snapshots=${{ env.ARTIFACTORY_SNAPSHOT }} \
             --repo-deploy-releases=${{ env.ARTIFACTORY_RELEASE }} \
             --repo-deploy-snapshots=${{ env.ARTIFACTORY_SNAPSHOT }} \
-            --server-id=my-jfrog-server
+            --server-id-resolve=my-jfrog-server
             
       - name: Build and Deploy Artifact
         run: |
