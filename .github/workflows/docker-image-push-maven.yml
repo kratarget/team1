@@ -61,28 +61,23 @@ jobs:
             --url="${{ secrets.JF_URL }}" \
             --access-token="${{ secrets.JF_ACCESS_TOKEN }}" \
             --interactive=false
-      
-      - name: Maven deploy with JFrog CLI
+
+      - name: Configure Maven for JFrog
         run: |
           jf mvn-config \
             --repo-resolve-releases=team1-libs-release \
             --repo-resolve-snapshots=team1-libs-snapshot \
             --repo-deploy-releases=team1-libs-release \
             --repo-deploy-snapshots=team1-libs-snapshot \
-            --server-id-resolve=my-jfrog-server \
-            --server-id-deploy=my-jfrog-server
-            
-          jf mvn clean package deploy -DskipTests \
-            --server-id-resolve=my-jfrog-server \
-            --server-id-deploy=my-jfrog-server
+            --server-id=my-jfrog-server
 
-          jf mvn deploy
+      - name: Build and Deploy Artifact
+        run: |
+          jf mvn clean package deploy -DskipTests
           
+      - name: Publish Build Info
+        run: |
           jf rt bp oneretail-app ${{ github.run_number }}
-        env:
-          JF_URL: "https://oneretailhackaton.jfrog.io"  #be mindful not to add the path /artifactory here as it will cause authentication issue
-          JF_USER: ${{ secrets.ARTIFACT_USER_ID }}
-          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }} # You have an option of giving password as well
               
       - name: Log in to GitHub Container Registry (GHCR)
         run: echo "${{ secrets.PACKAGES_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
