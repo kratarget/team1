@@ -63,6 +63,8 @@ jobs:
             --access-token=${{ secrets.JF_ACCESS_TOKEN }} \
             --interactive=false
 
+          jf c use hackathon-jfrog-server
+
       - name: Configure Maven for JFrog
         run: |
           jf mvn-config \
