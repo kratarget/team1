@@ -49,6 +49,35 @@ jobs:
           VERSION="1.0.${{ github.run_number }}"
           echo "Updating Maven project to version: $VERSION"
           mvn versions:set -DnewVersion=$VERSION
+
+      - name: Configure JFrog CLI
+        run: |
+          jf c add my-jfrog-server \
+            --url="${{ secrets.JF_URL }}" \
+            --access-token="${{ secrets.JF_ACCESS_TOKEN }}" \
+            --interactive=false
+      
+      - name: Maven deploy with JFrog CLI
+        run: |
+          jf mvn-config \
+            --repo-deploy-releases=team1-libs-release \
+            --repo-deploy-snapshots=team1-libs-snapshot \
+            --server-id-resolve=my-jfrog-server \
+            --server-id-deploy=my-jfrog-server
+            
+          jf mvn clean package deploy -DskipTests \
+            --server-id-resolve=my-jfrog-server \
+            --server-id-deploy=my-jfrog-server
+
+          jf mvn deploy
+          
+          jf rt bp oneretail-app ${{ github.run_number }}
+        env:
+          JF_URL: "https://oneretailhackaton.jfrog.io"  #be mindful not to add the path /artifactory here as it will cause authentication issue
+          JF_USER: ${{ secrets.ARTIFACT_USER_ID }}
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }} # You have an option of giving password as well
+
+
           
       - name: Setup jfrog
         uses: jfrog/setup-jfrog-cli@v4
