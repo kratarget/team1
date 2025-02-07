@@ -1,6 +1,6 @@
 resource "aws_wafv2_web_acl" "team1-waf-seahorse" {
   name        = "team1-waf-seahorse"
-  description = "Example WAF with managed rules"
+  description = "WAF with managed rules"
   scope       = "REGIONAL"
 
   default_action {
