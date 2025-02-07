@@ -63,6 +63,8 @@ jobs:
             --access-token=${{ secrets.JF_ACCESS_TOKEN }} \
             --interactive=false || echo "Server configuration failed"
 
+          jf c edit hackathon-jfrog-server --url="${{ vars.JF_URL }}"
+
           # Verify that the server was added
           jf c show
 
