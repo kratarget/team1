@@ -61,9 +61,19 @@ jobs:
           jf c add hackathon-jfrog-server \
             --url=${{ vars.JF_URL }} \
             --access-token=${{ secrets.JF_ACCESS_TOKEN }} \
-            --interactive=false
+            --interactive=false || echo "Server configuration failed"
 
+          # Verify that the server was added
+          jf c show
+
+      - name: Set JFrog CLI Default Server
+        run: |
           jf c use hackathon-jfrog-server
+
+      - name: Debug JFrog Config
+        run: |
+          echo "Listing configured JFrog servers..."
+          jf c show
 
       - name: Configure Maven for JFrog
         run: |
