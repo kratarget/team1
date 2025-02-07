@@ -1,9 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+namespace: kargo
+
 resources:
 - namespace.yaml
-- argocd-application
-- argo-rollouts
-- cert-manager
-- kargo
+- kargo-argocd-application.yaml
+- ingress.yaml

@@ -11,3 +11,28 @@ resources:
 patches:
 - path: argocd-cm.patch.yaml
 - path: argocd-cmd-params-cm.patch.yaml
+- target:
+    kind: Deployment
+    name: .*
+  patch: |-
+    - op: add
+      path: /spec/template/spec/imagePullSecrets #/-
+      value: [{ name: jfrog-artifactory-secret }]
+- target:
+    kind: Statefulset
+    name: .*
+  patch: |-
+    - op: add
+      path: /spec/template/spec/imagePullSecrets #/-
+      value: [{ name: jfrog-artifactory-secret }]
+- target:
+    kind: DaemonSet
+    name: .*
+  patch: |-
+    - op: add
+      path: /spec/template/spec/imagePullSecrets #/-
+      value: [{ name: jfrog-artifactory-secret }]
+
+images:
+  - name: redis
+    newName: oneretailhackaton.jfrog.io/virtual-docker/redis
