@@ -56,9 +56,22 @@ jobs:
           JF_URL: ${{ vars.JF_URL }}
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
 
+      - name: Configure JFrog CLI
+        run: |
+          jf c add hackathon-jfrog-server \
+            --url=${{ vars.JF_URL }} \
+            --access-token=${{ secrets.JF_ACCESS_TOKEN }} \
+            --interactive=false
+
       - name: Configure Maven for JFrog
         run: |
-          jf mvn-config --repo-deploy-releases=${{ env.ARTIFACTORY_RELEASE }} --repo-deploy-snapshots=${{ env.ARTIFACTORY_SNAPSHOT }} 
+          jf mvn-config \
+            --repo-resolve-releases=${{ env.ARTIFACTORY_RELEASE }} \
+            --repo-resolve-snapshots=${{ env.ARTIFACTORY_SNAPSHOT }} \
+            --repo-deploy-releases=${{ env.ARTIFACTORY_RELEASE }} \
+            --repo-deploy-snapshots=${{ env.ARTIFACTORY_SNAPSHOT }} \
+            --server-id-resolve=hackathon-jfrog-server \
+            --server-id-deploy=hackathon-jfrog-server
           
       - name: Build and Deploy Artifact
         run: |
