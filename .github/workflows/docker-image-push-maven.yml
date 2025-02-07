@@ -57,7 +57,7 @@ jobs:
         env:
           JF_URL: "https://oneretailhackaton.jfrog.io"  #be mindful not to add the path /artifactory here as it will cause authentication issue
           JF_USER: ${{ secrets.ARTIFACT_USER_ID }}
-          JF_ACCESS_TOKEN: ${{ secrets.ARTIFACT_TOKEN }} # You have an option of giving password as well
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }} # You have an option of giving password as well
 
       - name: Configure JFrog CLI
         run: |
@@ -68,6 +68,16 @@ jobs:
             --interactive=false
 
           jf c use my-jfrog-server
+
+          jf mvn-config --repo-deploy-releases=${ARTIFACTORY_RELEASE} --repo-deploy-snapshots=${ARTIFACTORY_SNAPSHOT}
+          
+          jf mvn deploy
+          
+          jf rt bp oneretail-app ${{ github.run_number }}
+        env:
+          JF_URL: "https://oneretailhackaton.jfrog.io"  #be mindful not to add the path /artifactory here as it will cause authentication issue
+          JF_USER: ${{ secrets.ARTIFACT_USER_ID }}
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }} # You have an option of giving password as well
           
       - name: Deploy to Jfrog 
         run: |
