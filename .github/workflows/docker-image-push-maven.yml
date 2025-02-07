@@ -11,6 +11,7 @@ env:
   #ARTIFACTORY_SNAPSHOT: team1-libs-snapshot  # <-- Change to your snapshot repo name
   #REGISTRY: oneretailhackaton.jfrog.io/virtual-docker
   IMAGE_NAME: oneretailhackaton.jfrog.io/virtual-docker/oneretail-app:${{ github.run_number }}
+  JFROG_CLI_LOG_LEVEL: DEBUG
   
 jobs:
   build-and-push:
@@ -31,7 +32,7 @@ jobs:
       - name: Setup jfrog CLI
         uses: jfrog/setup-jfrog-cli@v4
         with:
-          version: 2.73.0
+          version: latest
         env:
           JF_URL: ${{ secrets.JF_URL }}
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN_RAF }}
