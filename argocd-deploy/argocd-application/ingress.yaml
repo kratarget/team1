@@ -1,0 +1,45 @@
+apiVersion: eks.amazonaws.com/v1
+kind: IngressClassParams
+metadata:
+  name: internal-class
+spec:
+  scheme: internal
+  subnets:
+    ids:
+    - subnet-02d7fe499e716ba1c
+    - subnet-0ad66248d4ac0abb3
+---
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: internal-alb
+  annotations:
+    ingressclass.kubernetes.io/is-default-class: "true"
+spec:
+  # Configures the IngressClass to use EKS Auto Mode
+  controller: eks.amazonaws.com/alb
+  parameters:
+    apiGroup: eks.amazonaws.com
+    kind: IngressClassParams
+    # Use the name of the IngressClassParams set in the previous step
+    name: internal-class
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-server-http-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: alb
+  rules:
+  - host: "*.eu-west-1.elb.amazonaws.com"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              name: http
