@@ -59,11 +59,10 @@ jobs:
       - name: Configure Maven for JFrog
         run: |
           jf mvn-config \
-            --repo-resolve-releases=team1-libs-release \
-            --repo-resolve-snapshots=team1-libs-snapshot \
-            --repo-deploy-releases=team1-libs-release \
-            --repo-deploy-snapshots=team1-libs-snapshot \
-            --server-id-resolve=my-jfrog-server
+            --repo-resolve-releases=${{ env.ARTIFACTORY_RELEASE }} \
+            --repo-resolve-snapshots=${{ env.ARTIFACTORY_SNAPSHOT }} \
+            --repo-deploy-releases=${{ env.ARTIFACTORY_RELEASE }} \
+            --repo-deploy-snapshots=${{ env.ARTIFACTORY_SNAPSHOT }} \
 
       - name: Build and Deploy Artifact
         run: |
