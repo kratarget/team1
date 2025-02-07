@@ -50,17 +50,11 @@ jobs:
           echo "Updating Maven project to version: $VERSION"
           mvn versions:set -DnewVersion=$VERSION
 
-      - name: Install JFrog CLI
-        run: |
-          curl -fL https://install-cli.jfrog.io | sh
-          echo "$(pwd)/jfrog" >> $GITHUB_PATH
-
-      - name: Configure JFrog CLI
-        run: |
-          jf c add my-jfrog-server \
-            --url="${{ secrets.JF_URL }}" \
-            --access-token="${{ secrets.JF_ACCESS_TOKEN }}" \
-            --interactive=false
+      - name: Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v4
+        env:
+          JF_URL: ${{ vars.JF_URL }}
+          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
 
       - name: Configure Maven for JFrog
         run: |
