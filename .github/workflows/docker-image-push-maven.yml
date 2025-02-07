@@ -69,7 +69,7 @@ jobs:
             --repo-resolve-snapshots=team1-libs-snapshot \
             --repo-deploy-releases=team1-libs-release \
             --repo-deploy-snapshots=team1-libs-snapshot \
-            --server-id=my-jfrog-server
+            --server-id-resolve=my-jfrog-server
 
       - name: Build and Deploy Artifact
         run: |
