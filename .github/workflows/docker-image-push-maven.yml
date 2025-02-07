@@ -9,7 +9,7 @@ on:
 env:
   ARTIFACTORY_RELEASE: team1-libs-release    # <-- Change to your release repo name
   ARTIFACTORY_SNAPSHOT: team1-libs-snapshot  # <-- Change to your snapshot repo name
-  REGISTRY: oneretailhackaton.jfrog.io/virtual-docker
+  REGISTRY: oneretailhackaton.jfrog.io
   IMAGE_NAME: oneretailhackaton.jfrog.io/virtual-docker/oneretail-app:${{ github.run_number }}
   
 jobs:
@@ -94,9 +94,9 @@ jobs:
       - name: Log in to the JFrog Docker registry
         uses: docker/login-action@v3
         with:
-          registry: oneretailhackaton.jfrog.io/virtual-docker
-          username: "tahar.sayagh@gexternal.engie.com" # or an Artifactory username if needed
-          password: ${{ secrets.JF_ACCESS_TOKEN }}
+          registry: oneretailhackaton.jfrog.io
+          username: ${{ secrets.ARTIFACT_USER_ID }} # or an Artifactory username if needed
+          password: ${{ secrets.JF_DOCKER_TOKEN }}
 
       - name: Extract Docker metadata
         id: meta
