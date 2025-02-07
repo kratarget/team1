@@ -53,39 +53,14 @@ jobs:
       - name: Setup JFrog CLI
         uses: jfrog/setup-jfrog-cli@v4
         env:
-          JF_URL: ${{ vars.JF_URL }}
+          JF_URL: ${{ secrets.JF_URL }}
           JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
-
-      - name: Configure JFrog CLI
-        run: |
-          jf c add hackathon-jfrog-server \
-            --url=${{ vars.JF_URL }} \
-            --access-token=${{ secrets.JF_ACCESS_TOKEN }} \
-            --interactive=false || echo "Server configuration failed"
-
-          jf c edit hackathon-jfrog-server --url="${{ vars.JF_URL }}"
-
-          # Verify that the server was added
-          jf c show
-
-      - name: Set JFrog CLI Default Server
-        run: |
-          jf c use hackathon-jfrog-server
-
-      - name: Debug JFrog Config
-        run: |
-          echo "Listing configured JFrog servers..."
-          jf c show
 
       - name: Configure Maven for JFrog
         run: |
           jf mvn-config \
-            --repo-resolve-releases=${{ env.ARTIFACTORY_RELEASE }} \
-            --repo-resolve-snapshots=${{ env.ARTIFACTORY_SNAPSHOT }} \
             --repo-deploy-releases=${{ env.ARTIFACTORY_RELEASE }} \
             --repo-deploy-snapshots=${{ env.ARTIFACTORY_SNAPSHOT }} \
-            --server-id-resolve=hackathon-jfrog-server \
-            --server-id-deploy=hackathon-jfrog-server
           
       - name: Build and Deploy Artifact
         run: |
